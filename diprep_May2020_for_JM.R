@@ -1,10 +1,6 @@
 # Set it to GitHub
 # https://jcoliver.github.io/learn-r/010-github.html
 
-rm(list = ls(all = TRUE))
-
-setwd("~/Documents/diplomatic representation readings/old csv files/Dip_Rep_2021")
-
 
 ##################################
 ##
@@ -16,7 +12,7 @@ library(dplyr)
 library(statnet)
 library(network)
 
-full_data <- read.csv("Diplomatic_Exchange_2006v1.csv") %>%
+full_data <- read.csv("data/Diplomatic_Exchange_2006v1.csv") %>%
   # relabel so that higher is better relations
   mutate(DR_at_1 = ifelse(DR_at_1 == 9,
                           0.5,
@@ -25,7 +21,7 @@ full_data <- read.csv("Diplomatic_Exchange_2006v1.csv") %>%
                           0.5,
                           DR_at_2))
 
-contiguity <- read.csv("contdird.csv") %>%
+contiguity <- read.csv("data/contdird.csv") %>%
   mutate(contiguity = case_when(conttype == 1 ~ "land_river",
                                 conttype == 2 ~ "water_12",
                                 conttype == 3 ~ "water_24",
@@ -33,10 +29,10 @@ contiguity <- read.csv("contdird.csv") %>%
                                 conttype == 5 ~ "water_400")) %>%
   select(ccode1 = state1no, ccode2 = state2no, year, contiguity, conttype) 
 
-regions <- read.csv("states_with_regions_March1_2020 copy.csv", stringsAsFactors = FALSE)
+regionCodes <- read.csv("data/states_with_regions_March1_2020.csv")
 
 # national material capability - we'll use the composite indicator cinc
-nmc <- read.csv("NMC_5_0.csv", stringsAsFactors = FALSE)
+nmc <- read.csv("data/NMC_5_0.csv")
 
 
 ##################################
@@ -60,7 +56,7 @@ source("helper_functions.R")
 # 3. comparing P(not downgrade given start in sym) to P(not downgrade given start in asym).
 #    similar for P(x, x).
 
-fulldata = read.csv("Diplomatic_Exchange_2006v1.csv", header=T)
+fulldata = read.csv("data/Diplomatic_Exchange_2006v1.csv")
 
 
 ##################################
@@ -179,7 +175,6 @@ data$time.curr = time.curr
 ###############################
 ##   merge regions
 ##
-regionCodes = read.csv("states_with_regions_March1_2020.csv", header=T)
 
 region = rep(0, nrow(data))
 regionCodes = regionCodes[which(!duplicated(regionCodes$CCode)), ]  #remove duplicates
