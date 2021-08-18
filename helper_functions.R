@@ -107,7 +107,7 @@ addRegions <- function(d, regions) {
         inner_join(select(regions, ccode1 = CCode, region1 = Region)) %>%
         inner_join(select(regions, ccode2 = CCode, region2 = Region)) %>%
         mutate(is_same_region = region1 == region2,
-               region = case_when(is_same_region ~ region1,
+               region = case_when(is_same_region ~ as.double(region1),
                                   region1 == 1 & region2 == 2 ~ 6,
                                   region1 == 2 & region2 == 1 ~ 6,
                                   region1 == 1 & region2 == 3 ~ 7,
@@ -139,8 +139,8 @@ addRegions <- function(d, regions) {
 addNMC <- function(d, nmc) {
     
     d <- d %>%
-        inner_join(select(nmc, ccode1 = ccode, cinc1 = cinc)) %>%
-        inner_join(select(nmc, ccode2 = ccode, cinc2 = cinc))
+        inner_join(select(nmc, ccode1 = ccode, cinc1 = cinc, year)) %>%
+        inner_join(select(nmc, ccode2 = ccode, cinc2 = cinc, year))
     
     return(d)
     
